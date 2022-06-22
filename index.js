@@ -10,10 +10,29 @@ const PORT = process.env.PORT || 8000
 app.use(cors())
 app.use(express.json()) //json req.bodys
 
+// // simple middleware
+// app.use((req, res, next)=>{
+//     console.log('hello i am a middleware')
+//     res.locals.myData = 'i am data passed out of the middleware'
+//     // tell express to move on to next thing
+//     next()
+// })
+
+const myMiddleware = (req, res, next)=>{
+    console.log('hello i am a middleware')
+    res.locals.myData = 'i am data passed out of the middleware'
+    // tell express to move on to next thing
+    next()
+}
+
 // routes controllers
-app.get('/', (req, res)=>{
+//  route specific middleware
+app.get('/', myMiddleware, (req, res)=>{
     res.json({ msg: 'welcome to the backend' })
+    console.log(res.locals.myData)
 })
+
+app.use('/api-v1/users', require('./controllers/api-v1/users'))
 
 // listen on a port
 app.listen(PORT, ()=>{

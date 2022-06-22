@@ -15,3 +15,7 @@ db.on('error', err =>{
     console.error('db is no happy', err)
 })
 
+module.exports = {
+    // export db models
+    user: require('./user')
+}
